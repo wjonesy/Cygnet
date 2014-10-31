@@ -1,0 +1,60 @@
+﻿.Open-Sans {
+  font-family: "Open Sans";
+}
+body {
+  font-family: "Open Sans";
+}
+.background-color {
+  background: #3e606f;
+}
+.content-background-color {
+  background: #fcfff5;
+}
+.text-color {
+  color: #222222;
+}
+.menu-bottom-border {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-color: #193441;
+}
+.menu-background-color {
+  background: #193441;
+}
+.menu-text-color {
+  color: #fcfff5;
+}
+.menu-active-background-color {
+  background: #3e606f;
+}
+.menu-active-text-color {
+  color: #fcfff5;
+}
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.navbar-default .navbar-nav > li > a,
+.navbar-default .navbar-brand {
+  color: #fcfff5;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  color: #fcfff5;
+  background: #3e606f;
+}
+.dropdown-menu {
+  background: #193441;
+}
+.dropdown-menu li a {
+  color: #fcfff5;
+}
+.dropdown-menu li a:hover {
+  color: #193441;
+  background-color: #fcfff5;
+}
+/*# sourceMappingURL=PortalNameColor.css.map */

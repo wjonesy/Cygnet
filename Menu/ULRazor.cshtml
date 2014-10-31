@@ -1,0 +1,192 @@
+@using System;
+@using System.Collections;
+@using System.Collections.Generic;
+@using System.Collections.Specialized;
+@using System.Globalization;
+@using System.IO;
+@using System.Text.RegularExpressions;
+@using System.Web;
+@using System.Web.UI;
+@using System.Web.UI.HtmlControls;
+@using System.Web.UI.WebControls;
+@using DotNetNuke.Common;
+@using DotNetNuke.Common.Utilities;
+@using DotNetNuke.Entities.Host;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Entities.Portals;
+@using DotNetNuke.Entities.Profile;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Framework;
+@using DotNetNuke.Instrumentation;
+@using DotNetNuke.Security;
+@using DotNetNuke.Security.Membership;
+@using DotNetNuke.Security.Permissions;
+@using DotNetNuke.Services.Authentication;
+@using DotNetNuke.Services.Authentication.OAuth;
+@using DotNetNuke.Services.Exceptions;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Services.Mail;
+@using DotNetNuke.Services.Messaging;
+@using DotNetNuke.Services.Messaging.Data;
+@using DotNetNuke.UI.Skins.Controls;
+@using DotNetNuke.UI.UserControls;
+@using DotNetNuke.UI.WebControls;
+
+@using DotNetNuke.Web.DDRMenu;
+@using System.Dynamic;
+@inherits DotNetNuke.Web.Razor.DotNetNukeWebPage<dynamic>
+
+@{ var root = Model.Source.root; }
+
+@helper RenderNodes(IList<DotNetNuke.Web.DDRMenu.MenuNode> nodes)
+{
+
+
+    if (nodes.Count > 0)
+    {
+
+        <ul class="nav navbar-nav">
+            @foreach (var node in nodes)
+            {
+                var cssClasses = new List<string>();
+
+                //if (node.First) { cssClasses.Add("first"); }
+                //if (node.Last) { cssClasses.Add("last"); }
+
+                if (node.Selected) { cssClasses.Add("active"); }
+                if (node.HasChildren())
+                {
+                    cssClasses.Add("dropdown-toggle");
+
+                }
+
+                var classString = new HtmlString((cssClasses.Count == 0) ? "" : (" class=\"" + String.Join(" ", cssClasses.ToArray()) + "\""));
+
+                <li @classString>
+                    @if (node.Enabled && node.HasChildren())
+                    {
+                        <a href="@node.Url" data-toggle="dropdown">@node.Text <span class="caret"></span></a>
+                    }
+
+                    else if (node.Enabled)
+                    {
+                        <a href="@node.Url">@node.Text</a>
+                    }
+
+                    else
+                    {
+                        @node.Text
+                    }
+                    @RenderChildNodes(node.Children)
+                </li>
+            }
+        </ul>
+    }
+}
+
+
+
+@helper RenderChildNodes(IList<DotNetNuke.Web.DDRMenu.MenuNode> nodes)
+{
+    if (nodes.Count > 0)
+    {
+        <ul class="dropdown-menu" role="menu">
+            @foreach (var node in nodes)
+            {
+                var cssClasses = new List<string>();
+
+                //if (node.First) { cssClasses.Add("first"); }
+                //if (node.Last) { cssClasses.Add("last"); }
+
+                if (node.Selected) { cssClasses.Add("active"); }
+                if (node.HasChildren())
+                {
+                    cssClasses.Add("dropdown-toggle");
+
+                }
+
+                var classString = new HtmlString((cssClasses.Count == 0) ? "" : (" class=\"" + String.Join(" ", cssClasses.ToArray()) + "\""));
+
+                <li @classString>
+                    @if (node.Enabled && node.HasChildren())
+                    {
+                        <a href="@node.Url" data-toggle="dropdown">@node.Text <span class="caret"></span></a>
+                    }
+
+                    else if (node.Enabled)
+                    {
+                        <a href="@node.Url">@node.Text</a>
+                    }
+
+                    else
+                    {
+                        @node.Text
+                    }
+                    @RenderNodes(node.Children)
+                </li>
+
+            }
+        </ul>
+    }
+}
+
+
+
+
+
+@RenderNodes(root.Children)
+
+
+@*@{
+
+
+
+
+    int PortalId = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId;
+
+    string username = Request["username"];
+    string password = Request["password"];
+
+
+    UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
+
+    UserInfo objUser = UserController.ValidateUser(PortalId, username, password, "DNN", "", DotNetNuke.Entities.Portals.PortalSettings.Current.PortalName.ToString(), AuthenticationLoginBase.GetIPAddress(), ref loginStatus);
+
+    if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
+    {
+        bool isPersistent = false;
+
+        //User login
+        UserController.UserLogin(PortalId, objUser, DotNetNuke.Entities.Portals.PortalSettings.Current.PortalName, this.Request.UserHostAddress, isPersistent);
+
+
+        //this.Response.Write("Login success");
+        Response.Redirect(Request.RawUrl);
+
+    }
+    else
+    {
+        //this.Response.Write("Login failure");
+    }
+
+
+
+
+}
+
+<fieldset id="bootstrapLoginForm"><div><label for="CompanyName">user name:</label><input type="text" name="username" value="" id="username" /></div><div><label for="ContactName">password:</label><input name="password" value="" type="password" /></div> <div> <label>&nbsp;</label><input type="submit" value="Submit" class="submit" /></div></fieldset>
+
+@{
+    UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
+    if (userInfo.UserID != -1)
+    {
+        @:<script>$("#bootstrapLoginForm").hide();</script>
+    }
+}*@
+
+   
+
+
+
+
+
